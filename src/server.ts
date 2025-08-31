@@ -1,13 +1,21 @@
 import { Server } from "http";
 import app from "./app";
+import mongoose from "mongoose";
 
 let server: Server;
-const port = 5000;
+const PORT = process.env.PORT || 5000;
+const URI = process.env.URI || "mongodb://localhost:27017";
 
-const bootstrap = async () => {
-  server = app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-  });
-};
+async function main() {
+  try {
+    await mongoose.connect(URI);
+    server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
 
-bootstrap();
+main();
+
