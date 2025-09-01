@@ -4,12 +4,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const book_controllers_1 = require("./app/controllers/book.controllers");
+const borrow_controllers_1 = require("./app/controllers/borrow.controllers");
 const app = (0, express_1.default)();
-const port = 3000;
+app.use(express_1.default.json());
+app.use("/api/books", book_controllers_1.bookRoutes);
+app.use("/api/borrow", borrow_controllers_1.borrowRoutes);
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Welcome to Library Management System");
 });
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+app.use((req, res) => {
+    res.status(400).json({
+        message: "Route Not Found.",
+    });
 });
+app.use((error, req, res, next) => {
+    if (error) {
+        console.log(error);
+        res.status(400).json({
+            message: "Something went wrong from global error handler",
+            error,
+        });
+    }
+});
+exports.default = app;
 //# sourceMappingURL=app.js.map
