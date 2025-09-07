@@ -5,7 +5,25 @@ import { borrowRoutes } from "./app/controllers/borrow.controllers";
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors())
+
+const allowedOrigins = [
+  "http://localhost:5173", // dev
+  "https://your-frontend.vercel.app", // production
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 
 app.use("/api/books", bookRoutes);
 app.use("/api/borrow", borrowRoutes);
