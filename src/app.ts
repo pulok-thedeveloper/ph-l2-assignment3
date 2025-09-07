@@ -8,7 +8,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173", // dev
-  "https://your-frontend.vercel.app", // production
+  "https://library-management-frontend-mauve.vercel.app", // production
 ];
 
 app.use(
